@@ -1,0 +1,62 @@
+ID,LINK_EN,NAME_EN,NAME_FR
+1,https://seer.cancer.gov/iccc/seericcc.html,All cancers combined,Tous les cancers combinés
+10,https://seer.cancer.gov/iccc/seericcc.html#thn_1,"I. Leukemias, myeloproliferative diseases, and myelodysplastic diseases","I Leucémies, syndromes myéloprolifératifs et syndromes myélodysplasiques"
+11,https://seer.cancer.gov/iccc/seericcc.html#thn_1,I(a). Lymphoid leukemias,I a) Leucémies lymphoïdes
+12,https://seer.cancer.gov/iccc/seericcc.html#thn_1,I(b). Acute myeloid leukemias,I b) Leucémies myéloïdes aiguës
+13,https://seer.cancer.gov/iccc/seericcc.html#thn_1,I(c). Chronic myeloproliferative diseases,I c) Syndromes myéloprolifératifs chroniques
+14,https://seer.cancer.gov/iccc/seericcc.html#thn_1,I(d). Myelodysplastic syndrome and other myeloproliferative diseases,I d) Syndromes myélodysplasiques et autres syndromes myéloprolifératifs
+15,https://seer.cancer.gov/iccc/seericcc.html#thn_1,I(e). Unspecified and other specified leukemias,I e) Leucémies non précisées et autres leucémies précisées
+20,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_14,II. Lymphomas and reticuloendothelial neoplasms,II Lymphomes et tumeurs réticuloendothéliales
+21,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_14,II(a). Hodgkin lymphomas,II a) Lymphome de Hodgkin
+22,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_14,II(b). Non-Hodgkin lymphomas (except Burkitt lymphoma),II b) Lymphomes non hodgkiniens
+23,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_14,II(c). Burkitt lymphoma,II c) Lymphome de Burkitt
+24,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_14,II(d). Miscellaneous lymphoreticular neoplasms,II d) Tumeurs lymphoréticulaires diverses
+25,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_14,II(e). Unspecified lymphomas,II e) Lymphomes non précisés
+30,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_27,III. CNS and miscellaneous intracranial and intraspinal neoplasms,III Tumeurs du SNC et diverses tumeurs intracrâniennes et intramédullaires
+31,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_27,III(a). Ependymomas and choroid plexus tumor,III a) Épendymomes et tumeurs des plexus choroïdes
+32,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_27,III(b). Astrocytomas,III b) Astrocytomes
+33,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_27,III(c). Intracranial and intraspinal embryonal tumors,III c) Tumeurs embryonnaires intracrâniennes et intramédullaires
+34,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_27,III(d). Other gliomas,III d) Autres gliomes
+35,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_27,III(e). Other specified intracranial and intraspinal neoplasms,III e) Autres tumeurs intracrâniennes et intramédullaires précisées
+36,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_27,III(f). Unspecified intracranial and intraspinal neoplasms,III f) Tumeurs intracrâniennes et intramédullaires non précisées
+40,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_50,IV. Neuroblastoma and other peripheral nervous cell tumors,IV Neuroblastomes et autres tumeurs du système nerveux périphérique
+41,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_50,IV(a). Neuroblastoma and ganglioneuroblastoma,IV a) Neuroblastome et ganglioneuroblastome
+42,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_50,IV(b). Other peripheral nervous cell tumors,IV b) Autres tumeurs du système nerveux périphérique
+50,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_55,V. Retinoblastoma,V Rétinoblastome
+60,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_55,VI. Renal tumors,VI Tumeurs rénales
+61,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_55,VI(a). Nephroblastoma and other nonepithelial renal tumors,VI a) Néphroblastome et autres tumeurs rénales non épithéliales
+62,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_55,VI(b). Renal carcinomas,VI b) Carcinomes rénaux
+63,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_55,VI(c). Unspecified malignant renal tumors,VI c) Tumeurs rénales malignes non précisées
+70,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_64,VII. Hepatic tumors,VII Tumeurs hépatiques
+71,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_64,VII(a). Hepatoblastoma,VII a) Hépatoblastome
+72,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_64,VII(b). Hepatic carcinomas,VII b) Carcinomes hépatiques
+73,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_64,VII(c). Unspecified malignant hepatic tumors,VII c) Tumeurs hépatiques malignes non précisées
+80,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_69,VIII. Malignant bone tumors,VIII Tumeurs osseuses malignes
+81,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_69,VIII(a). Osteosarcomas,VIII a) Ostéosarcomes
+82,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_69,VIII(b). Chondrosarcomas,VIII b) Chondrosarcomes
+83,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_69,VIII(c). Ewing tumor and related sarcomas of bone,VIII c) Sarcome d'Ewing et ostéosarcomes apparentés
+84,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_69,VIII(d). Other specified malignant bone tumors,VIII d) Autres tumeurs osseuses malignes précisées
+85,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_69,VIII(e). Unspecified malignant bone tumors,VIII e) Tumeurs osseuses malignes non précisées
+90,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_84,IX. Soft tissue and other extraosseous sarcomas,IX Sarcomes des tissus mous et autres sarcomes extra-osseux
+91,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_84,IX(a). Rhabdomyosarcomas,IX a) Rhabdomyosarcomes
+92,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_84,"IX(b). Fibrosarcomas, peripheral nerve sheath tumors, and other fibrous neoplasms","IX b) Fibrosarcomes, tumeurs de la gaine des nerfs périphériques et autres tumeurs fibromateuses"
+93,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_84,IX(c). Kaposi sarcoma,IX c) Sarcome de Kaposi
+94,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_84,IX(d). Other specified soft tissue sarcomas,IX d) Autres sarcomes des tissus mous précisés
+95,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_84,IX(e). Unspecified soft tissue sarcomas,IX e) Sarcomes des tissus mous non précisés
+100,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_108,"X. Germ cell tumors, trophoblastic tumors, and neoplasms of gonads","X Tumeurs germinales, trophoblastiques et gonadiques"
+101,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_108,X(a). Intracranial and intraspinal germ cell tumors,X a) Tumeurs germinales intracrâniennes et intramédullaires
+102,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_108,X(b). Malignant extracranial and extragonadal germ cell tumors,X b) Tumeurs germinales extragonadiques et extracrâniennes malignes
+103,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_108,X(c). Malignant gonadal germ cell tumors,X c) Tumeurs germinales gonadiques malignes
+104,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_108,X(d). Gonadal carcinomas,X d) Carcinomes gonadiques
+105,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_108,X(e). Other and unspecified malignant gonadal tumors,"X e) Autres tumeurs gonadiques malignes et tumeurs gonadiques malignes non
+ précisées"
+110,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_135,XI. Other malignant epithelial neoplasms and malignant melanomas,XI Autres tumeurs épithéliales malignes et mélanomes malin
+111,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_135,XI(a). Adrenocortical carcinomas,XI a) Carcinomes adrénocorticales
+112,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_135,XI(b). Thyroid carcinomas,XI b) Carcinomes thyroïdiens
+113,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_135,XI(c). Nasopharyngeal carcinomas,XI c) Carcinomes nasopharyngés
+114,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_135,XI(d). Malignant melanomas,XI d) Mélanomes malins
+115,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_135,XI(e). Skin carcinomas,XI e) Carcinomes cutanés
+116,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_135,XI(f). Other and unspecified carcinomas,XI f) Autres carcinomes et carcinomes non précisés
+120,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_154,XII. Other and unspecified malignant neoplasms,XII Tumeurs malignes autres et non précisées
+121,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_154,XII(a). Other specified malignant tumors,XII a) Autres tumeurs malignes précisées
+122,https://seer.cancer.gov/iccc/iccc-who2008.html#thn_154,XII(b). Other unspecified malignant tumors,XII b) Autres tumeurs malignes non précisées

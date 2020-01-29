@@ -1,38 +1,60 @@
 const dataPath = "data/data.csv";
+const cancerCodesPath = "data/ICCC_codes.csv";
 
-d3.csv(dataPath, function(csv) {
+function createCheckBoxGroupForPeriodOfDiagnasis(keyValuePairs) {
+
+}
+
+d3.csv(dataPath, function(data) {
     let periodOfDiagnosisFilterMapping = {
-        "All years": "",
-        "2001-2006": "",
-        "2007-2011": "",
-        "2012-2016": ""
+        "A": "All years",
+        "E": "2001-2006",
+        "M": "2007-2011",
+        "L": "2012-2016"
     };
+    let selectedPeriodOfDiagnosisList = [];
 
     let sexFilterMapping = {
-        "Both": "",
-        "Male": "",
-        "Female": ""
+        "B": "Both",
+        "M": "Male",
+        "F": "Female"
     };
+    let selectedSexesList = [];
 
     let ageFilterMapping = {
-        "AllAges": "",
-        "less than 1 year": "",
-        "1 to 4 years": "",
-        "5 to 9 years": "",
-        "10 to 14 years": ""
+        "A": "All Ages",
+        "B": "less than 1 year",
+        "C": "1 to 4 years",
+        "D": "5 to 9 years",
+        "E": "10 to 14 years"
     };
+    let selectedAgesList = [];
 
+    // unknown codes for the moment...
     let extentOfDiseaseFilterMapping = {
-        "Both": "",
-        "Metastatic disease": "",
-        "Non-metastatic disease": "",
+        "B": "Both",
+        "": "Metastatic disease",
+        "": "Non-metastatic disease",
     };
+    let selectedExtentOfDiseasesList = [];
 
+    // unkown codes for the moment...
     let riskGroupFilterMapping = {
-        "Both": "",
-        "Standard risk": "",
-        "High risk": ""
+        "B": "Both",
+        "": "Standard risk",
+        "": "High risk"
     };
+    let selectedRiskGroupsList = [];
 
-    console.log(csv);
+    let cancerTypeFilterMapping = {};
+    d3.csv(cancerCodesPath, function(codes) {
+        codes.forEach(function(value, i) {
+            cancerTypeFilterMapping[value.ID] = {}
+            cancerTypeFilterMapping[value.ID]['EN'] = value.NAME_EN;
+            cancerTypeFilterMapping[value.ID]['FR'] = value.NAME_FR;
+        });
+    });
+    let selectedCancerTypesList = [];
+
+    console.log(data);
 });
