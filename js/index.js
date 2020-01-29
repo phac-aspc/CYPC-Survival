@@ -1,8 +1,16 @@
 const dataPath = "data/data.csv";
 const cancerCodesPath = "data/ICCC_codes.csv";
 
-function createCheckBoxGroupForPeriodOfDiagnasis(keyValuePairs) {
-
+function createCheckBoxGroupForPeriodOfDiagnosis(keyValuePairs) {
+    let periodOfDiagnosisFieldSet = document.getElementById("periodOfDiagnosisFilter");
+    for (let key in keyValuePairs) {
+        if (keyValuePairs.hasOwnProperty(key)) {
+            let checkBox = document.createElement("input");
+            checkBox.setAttribute("type", "checkbox");
+            checkBox.setAttribute("value", key);
+            periodOfDiagnosisFieldSet.appendChild(checkBox);
+        }
+    }
 }
 
 d3.csv(dataPath, function(data) {
@@ -12,6 +20,7 @@ d3.csv(dataPath, function(data) {
         "M": "2007-2011",
         "L": "2012-2016"
     };
+    createCheckBoxGroupForPeriodOfDiagnosis(periodOfDiagnosisFilterMapping);
     let selectedPeriodOfDiagnosisList = [];
 
     let sexFilterMapping = {
