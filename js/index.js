@@ -2,13 +2,14 @@ const dataPath = "data/data.csv";
 const cancerCodesPath = "data/ICCC_codes.csv";
 
 function createCheckBoxGroupForPeriodOfDiagnosis(keyValuePairs) {
-    let periodOfDiagnosisFieldSet = document.getElementById("periodOfDiagnosisFilter");
+    let periodOfDiagnosisFieldSet = $("#periodOfDiagnosisFilter");
     for (let key in keyValuePairs) {
         if (keyValuePairs.hasOwnProperty(key)) {
-            let checkBox = document.createElement("input");
-            checkBox.setAttribute("type", "checkbox");
-            checkBox.setAttribute("value", key);
-            periodOfDiagnosisFieldSet.appendChild(checkBox);
+            periodOfDiagnosisFieldSet.append(`
+                <div class="filter">
+                    <input type="checkbox" value=${key}>${keyValuePairs[key]}
+                </div>
+            `);
         }
     }
 }
