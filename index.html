@@ -20,7 +20,7 @@
             margin-right: 15px;
         }
 
-        .checkbox-group {
+        .checkbox-group, .dropdown-group {
             margin: 15px 0;
         }
     </style>
@@ -160,6 +160,15 @@
     </header>
     <main property="mainContentOfPage" class="container">
         <h1>Cancer in Young People in Canada Data Tool (Survival)</h1>
+        <div class="dropdown-group">
+            <span>Select Cancer Type: </span>
+            <select name="cancerType" id="cancerTypeFilter"></select>
+        </div>
+        <div class="dropdown-group">
+            <span>Select Measure: </span>
+            <select name="measure" id="measureFilter"></select>
+        </div>
+        <hr>
         <div id="periodOfDiagnosisFilter" class="checkbox-group">
             <span>Select Period(s) of Diagnosis: </span>
         </div>

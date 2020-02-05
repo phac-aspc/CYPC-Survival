@@ -40,7 +40,61 @@ function createCheckBoxGroupForAgeFilter(keyValuePairs) {
     }
 }
 
+function populateCancerTypesDropdown(keyValuePairs) {
+    let cancerTypeDropDown = $("#cancerTypeFilter");
+    for (let key in keyValuePairs) {
+        if (keyValuePairs.hasOwnProperty(key)) {
+            cancerTypeDropDown.append(`
+                <option value=${key}>${keyValuePairs[key]["EN"]}</option>
+            `);
+        }
+    }
+}
+
+function populateMeasureDropdown(keyValuePairs) {
+    let measureDropdown = $("#measureFilter");
+    for (let key in keyValuePairs) {
+        if (keyValuePairs.hasOwnProperty(key)) {
+            measureDropdown.append(`
+                <option value=${key}>${keyValuePairs[key]}</option>
+            `);
+        }
+    }
+}
 d3.csv(dataPath, function(data) {
+    // cancer type filter code
+    let cancerTypeFilterMapping = {};
+    d3.csv(cancerCodesPath, function(codes) {
+        codes.forEach(function(value, i) {
+            cancerTypeFilterMapping[value.ID] = {}
+            cancerTypeFilterMapping[value.ID]['EN'] = value.NAME_EN;
+            cancerTypeFilterMapping[value.ID]['FR'] = value.NAME_FR;
+        });
+        populateCancerTypesDropdown(cancerTypeFilterMapping);
+    });
+    
+    let selectedCancerType = $("#cancerTypeFilter").value;
+    $("#cancerTypeFilter").on("change", function(e) {
+        selectedCancerType = this.value;
+        console.log("Selected cancer type: ", selectedCancerType);
+    });
+    
+    // measure filter code
+    let measureFilterMapping = {
+        "A": "Overall survival",
+        "B": "Event-free survival",
+        "C": "Cumulative incidence of relapse"
+    };
+    populateMeasureDropdown(measureFilterMapping)
+    
+    let selectedMeasure = $("#measureFilter").value;
+    $('#measureFilter').on("change", function(e) {
+        selectedMeasure = this.value;
+        console.log("Selected measure: ", selectedMeasure);
+    });
+
+
+    // period of diagnosis filter code
     let periodOfDiagnosisFilterMapping = {
         "A": "All years",
         "E": "2001-2006",
@@ -60,6 +114,7 @@ d3.csv(dataPath, function(data) {
         console.log("Period of Diagnosis selected: ", selectedPeriodOfDiagnosisList);
     });
 
+    // sex filter code
     let sexFilterMapping = {
         "B": "Both",
         "M": "Male",
@@ -78,6 +133,7 @@ d3.csv(dataPath, function(data) {
         console.log("Sexes selected: ", selectedSexesList);
     });
 
+    // age filter code
     let ageFilterMapping = {
         "A": "All Ages",
         "B": "less than 1 year",
@@ -85,7 +141,6 @@ d3.csv(dataPath, function(data) {
         "D": "5 to 9 years",
         "E": "10 to 14 years"
     };
-    
     createCheckBoxGroupForAgeFilter(ageFilterMapping);
 
     let selectedAgesList = [];
@@ -98,6 +153,7 @@ d3.csv(dataPath, function(data) {
         }
         console.log("Ages selected: ", selectedAgesList);
     });
+
     // unknown codes for the moment...
     let extentOfDiseaseFilterMapping = {
         "B": "Both",
@@ -113,16 +169,5 @@ d3.csv(dataPath, function(data) {
         "": "High risk"
     };
     let selectedRiskGroupsList = [];
-
-    let cancerTypeFilterMapping = {};
-    d3.csv(cancerCodesPath, function(codes) {
-        codes.forEach(function(value, i) {
-            cancerTypeFilterMapping[value.ID] = {}
-            cancerTypeFilterMapping[value.ID]['EN'] = value.NAME_EN;
-            cancerTypeFilterMapping[value.ID]['FR'] = value.NAME_FR;
-        });
-    });
-    let selectedCancerTypesList = [];
-
     console.log(data);
 });
