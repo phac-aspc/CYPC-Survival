@@ -19,6 +19,10 @@
             display: inline;
             margin-right: 15px;
         }
+
+        .checkbox-group {
+            margin: 15px 0;
+        }
     </style>
 </head>
 
@@ -156,10 +160,15 @@
     </header>
     <main property="mainContentOfPage" class="container">
         <h1>Cancer in Young People in Canada Data Tool (Survival)</h1>
-        <fieldset id="periodOfDiagnosisFilter">
-            <p>Select Period(s) of Diagnosis: </p>
-        </fieldset>
-
+        <div id="periodOfDiagnosisFilter" class="checkbox-group">
+            <span>Select Period(s) of Diagnosis: </span>
+        </div>
+        <div id="sexFilter" class="checkbox-group">
+            <span>Select Sex: </span>
+        </div>
+        <div id="ageFilter" class="checkbox-group">
+            <span>Select Age: </span>
+        </div>
         <div class="row pagedetails">
             <div class="row pagedetails">
                 <div class="col-sm-6 col-lg-4 mrgn-tp-sm">

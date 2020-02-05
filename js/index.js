@@ -1,13 +1,39 @@
 const dataPath = "data/data.csv";
 const cancerCodesPath = "data/ICCC_codes.csv";
 
-function createCheckBoxGroupForPeriodOfDiagnosis(keyValuePairs) {
+function createCheckBoxGroupForPeriodOfDiagnosisFilter(keyValuePairs) {
     let periodOfDiagnosisFieldSet = $("#periodOfDiagnosisFilter");
     for (let key in keyValuePairs) {
         if (keyValuePairs.hasOwnProperty(key)) {
             periodOfDiagnosisFieldSet.append(`
                 <div class="filter">
-                    <input type="checkbox" value=${key}>${keyValuePairs[key]}
+                    <input type="checkbox" class="period-of-diagnosis-filter" value=${key}>${keyValuePairs[key]}
+                </div>
+            `);
+        }
+    }
+}
+
+function createCheckBoxGroupForSexFilter(keyValuePairs) {
+    let sexFieldSet = $("#sexFilter");
+    for (let key in keyValuePairs) {
+        if (keyValuePairs.hasOwnProperty(key)) {
+            sexFieldSet.append(`
+                <div class="filter">
+                    <input type="checkbox" class="sex-filter" value=${key}>${keyValuePairs[key]}
+                </div>
+            `);
+        }
+    }
+}
+
+function createCheckBoxGroupForAgeFilter(keyValuePairs) {
+    let ageFieldSet = $("#ageFilter");
+    for (let key in keyValuePairs) {
+        if (keyValuePairs.hasOwnProperty(key)) {
+            ageFieldSet.append(`
+                <div class="filter">
+                    <input type="checkbox" class="age-filter" value=${key}>${keyValuePairs[key]}
                 </div>
             `);
         }
@@ -21,15 +47,36 @@ d3.csv(dataPath, function(data) {
         "M": "2007-2011",
         "L": "2012-2016"
     };
-    createCheckBoxGroupForPeriodOfDiagnosis(periodOfDiagnosisFilterMapping);
+    createCheckBoxGroupForPeriodOfDiagnosisFilter(periodOfDiagnosisFilterMapping);
+    
     let selectedPeriodOfDiagnosisList = [];
+    $(".period-of-diagnosis-filter").on("change", function(e) {
+        let value = this.value;
+        if (this.checked) {
+            selectedPeriodOfDiagnosisList.push(value);
+        } else {
+            selectedPeriodOfDiagnosisList.splice(selectedPeriodOfDiagnosisList.indexOf(value), 1);
+        }
+        console.log("Period of Diagnosis selected: ", selectedPeriodOfDiagnosisList);
+    });
 
     let sexFilterMapping = {
         "B": "Both",
         "M": "Male",
         "F": "Female"
     };
+    createCheckBoxGroupForSexFilter(sexFilterMapping);
+    
     let selectedSexesList = [];
+    $(".sex-filter").on("change", function(e) {
+        let value = this.value;
+        if (this.checked) {
+            selectedSexesList.push(value);
+        } else {
+            selectedSexesList.splice(selectedSexesList.indexOf(value), 1);
+        }
+        console.log("Sexes selected: ", selectedSexesList);
+    });
 
     let ageFilterMapping = {
         "A": "All Ages",
@@ -38,8 +85,19 @@ d3.csv(dataPath, function(data) {
         "D": "5 to 9 years",
         "E": "10 to 14 years"
     };
-    let selectedAgesList = [];
+    
+    createCheckBoxGroupForAgeFilter(ageFilterMapping);
 
+    let selectedAgesList = [];
+    $(".age-filter").on("change", function(e) {
+        let value = this.value;
+        if (this.checked) {
+            selectedAgesList.push(value);
+        } else {
+            selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
+        }
+        console.log("Ages selected: ", selectedAgesList);
+    });
     // unknown codes for the moment...
     let extentOfDiseaseFilterMapping = {
         "B": "Both",
