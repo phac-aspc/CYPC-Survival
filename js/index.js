@@ -110,7 +110,6 @@ d3.csv(dataPath, function(data) {
     let selectedAgesList = [defaultAge];
     let selectedCancerType = 1;
 
-    let filterCodes = [];
     const combineCodes = function() {
         let firstLayer = [];
         for (let i=0; i<selectedPeriodOfDiagnosisList.length; i++) {
@@ -134,12 +133,34 @@ d3.csv(dataPath, function(data) {
         // adding the cancer codes at the end
         for (let i=0; i<thirdLayer.length; i++) {
             console.log(selectedCancerType)
-            thirdLayer[i] += selectedCancerType.toString();
+            thirdLayer[i] += "B" + selectedCancerType.toString();
         }
         console.log("Filter codes: ", thirdLayer);
         return thirdLayer;
     };
+    
+    let graph = new Graph(data, document.getElementById("graph"));
+    const updateLines = function(codes) {
+        let lines = graph.lines.slice(0, graph.lines.length);
 
+        // add extras
+        for (let i=0; i<codes.length; i++) {
+            if (!lines.includes(codes[i])) {
+                graph.addLine(codes[i]);
+            }
+        }
+        console.log("Lines in display (after addition):", graph.lines);
+
+        // remove extras
+        for (let i=0; i<lines.length;i++) {
+            if (!codes.includes(lines[i])) {
+                graph.removeLine(lines[i]);
+            }
+        }
+        console.log("Lines in display (after removal):", graph.lines);
+        console.log("Lines:", lines);
+    };
+    updateLines(combineCodes());
     $("#cancerTypeFilter").on("change", function(e) {
         selectedCancerType = this.value;
     });
@@ -178,7 +199,7 @@ d3.csv(dataPath, function(data) {
             else
                 selectedPeriodOfDiagnosisList.splice(selectedPeriodOfDiagnosisList.indexOf(value), 1);
         }
-        combineCodes();
+        updateLines(combineCodes());
         console.log("Period of Diagnosis selected: ", selectedPeriodOfDiagnosisList);
     });
 
@@ -200,7 +221,7 @@ d3.csv(dataPath, function(data) {
             else
                 selectedSexesList.splice(selectedSexesList.indexOf(value), 1);
         }
-        combineCodes();
+        updateLines(combineCodes());
         console.log("Sexes selected: ", selectedSexesList);
     });
 
@@ -224,7 +245,7 @@ d3.csv(dataPath, function(data) {
             else
                 selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
         }
-        combineCodes();
+        updateLines(combineCodes());
         console.log("Ages selected: ", selectedAgesList);
     });
 
@@ -243,11 +264,6 @@ d3.csv(dataPath, function(data) {
         "": "High risk"
     };
     let selectedRiskGroupsList = [];
-    
-    let exampleFilter = "ABAB1";
-    let graph = new Graph(data, document.getElementById("graph"));
-    
-    graph.addLine(exampleFilter);
 });
 
 class Graph {
@@ -257,7 +273,7 @@ class Graph {
         this.margin = { top: 25, right: 35, bottom: 60, left: 35 };
         this.height = height - this.margin.top - this.margin.bottom;
         this.width = width - this.margin.left - this.margin.right;
-
+        this.lines = [];
         this.svg = d3.select(target)
                      .append("svg")
                      .attr("height", height + this.margin.top + this.margin.bottom)
@@ -332,6 +348,7 @@ class Graph {
     }
 
     addLine(filter) {
+        this.lines.push(filter);
         let this_ = this;
         let lineGenerator = d3.line()
             .x(function(d, i) {
@@ -366,6 +383,8 @@ class Graph {
     }
 
     removeLine(filter) {
-        this.svg.remove("#" + filter);
+        this.lines.splice(this.lines.indexOf(filter), 1);
+        this.svg.select("#" + filter)
+                .remove();
     }
 }
