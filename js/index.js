@@ -3,39 +3,66 @@ const cancerCodesPath = "data/ICCC_codes.csv";
 
 function createCheckBoxGroupForPeriodOfDiagnosisFilter(keyValuePairs) {
     let periodOfDiagnosisFieldSet = $("#periodOfDiagnosisFilter");
+    let index = 0;
     for (let key in keyValuePairs) {
         if (keyValuePairs.hasOwnProperty(key)) {
-            periodOfDiagnosisFieldSet.append(`
-                <div class="filter">
-                    <input type="checkbox" class="period-of-diagnosis-filter" value=${key}>${keyValuePairs[key]}
-                </div>
-            `);
+            if (index == 0)
+                periodOfDiagnosisFieldSet.append(`
+                    <div class="filter">
+                        <input type="checkbox" checked class="period-of-diagnosis-filter" value=${key}>${keyValuePairs[key]}
+                    </div>
+                `);
+            else
+                periodOfDiagnosisFieldSet.append(`
+                    <div class="filter">
+                        <input type="checkbox" class="period-of-diagnosis-filter" value=${key}>${keyValuePairs[key]}
+                    </div>
+                `);
+            index++;
         }
     }
 }
 
 function createCheckBoxGroupForSexFilter(keyValuePairs) {
     let sexFieldSet = $("#sexFilter");
+    let index = 0;
     for (let key in keyValuePairs) {
         if (keyValuePairs.hasOwnProperty(key)) {
-            sexFieldSet.append(`
-                <div class="filter">
-                    <input type="checkbox" class="sex-filter" value=${key}>${keyValuePairs[key]}
-                </div>
-            `);
+            if (index == 0)
+                sexFieldSet.append(`
+                    <div class="filter">
+                        <input type="checkbox" checked class="sex-filter" value=${key}>${keyValuePairs[key]}
+                    </div>
+                `);
+            else
+                sexFieldSet.append(`
+                        <div class="filter">
+                            <input type="checkbox" class="sex-filter" value=${key}>${keyValuePairs[key]}
+                        </div>
+                    `);
+            index++;
         }
     }
 }
 
 function createCheckBoxGroupForAgeFilter(keyValuePairs) {
     let ageFieldSet = $("#ageFilter");
+    let index = 0;
     for (let key in keyValuePairs) {
         if (keyValuePairs.hasOwnProperty(key)) {
-            ageFieldSet.append(`
-                <div class="filter">
-                    <input type="checkbox" class="age-filter" value=${key}>${keyValuePairs[key]}
-                </div>
-            `);
+            if (index == 0)
+                ageFieldSet.append(`
+                    <div class="filter">
+                        <input type="checkbox" checked class="age-filter" value=${key}>${keyValuePairs[key]}
+                    </div>
+                `);
+            else
+                ageFieldSet.append(`
+                    <div class="filter">
+                        <input type="checkbox" class="age-filter" value=${key}>${keyValuePairs[key]}
+                    </div>
+                `);
+            index++;
         }
     }
 }
@@ -74,9 +101,13 @@ d3.csv(dataPath, function(data) {
         populateCancerTypesDropdown(cancerTypeFilterMapping);
     });
     
-    let selectedPeriodOfDiagnosisList = ["A"];
-    let selectedSexesList = ["B"];
-    let selectedAgesList = ["A"];
+    const defaultPeriodOfDiagnosis = "A";
+    const defaultSex = "B";
+    const defaultAge = "A";
+
+    let selectedPeriodOfDiagnosisList = [defaultPeriodOfDiagnosis];
+    let selectedSexesList = [defaultSex];
+    let selectedAgesList = [defaultAge];
     let selectedCancerType = 1;
 
     let filterCodes = [];
@@ -105,13 +136,12 @@ d3.csv(dataPath, function(data) {
             console.log(selectedCancerType)
             thirdLayer[i] += selectedCancerType.toString();
         }
-        console.log("All codes: ", thirdLayer);
+        console.log("Filter codes: ", thirdLayer);
         return thirdLayer;
     };
 
     $("#cancerTypeFilter").on("change", function(e) {
         selectedCancerType = this.value;
-        console.log("Selected cancer type: ", selectedCancerType);
     });
     
     // measure filter code
@@ -136,14 +166,17 @@ d3.csv(dataPath, function(data) {
         "L": "2012-2016"
     };
     createCheckBoxGroupForPeriodOfDiagnosisFilter(periodOfDiagnosisFilterMapping);
-    
-    
+
+
     $(".period-of-diagnosis-filter").on("change", function(e) {
         let value = this.value;
         if (this.checked) {
             selectedPeriodOfDiagnosisList.push(value);
         } else {
-            selectedPeriodOfDiagnosisList.splice(selectedPeriodOfDiagnosisList.indexOf(value), 1);
+            if (selectedPeriodOfDiagnosisList.length == 1)
+                this.checked = true;
+            else
+                selectedPeriodOfDiagnosisList.splice(selectedPeriodOfDiagnosisList.indexOf(value), 1);
         }
         combineCodes();
         console.log("Period of Diagnosis selected: ", selectedPeriodOfDiagnosisList);
@@ -157,13 +190,15 @@ d3.csv(dataPath, function(data) {
     };
     createCheckBoxGroupForSexFilter(sexFilterMapping);
     
-    
     $(".sex-filter").on("change", function(e) {
         let value = this.value;
         if (this.checked) {
             selectedSexesList.push(value);
         } else {
-            selectedSexesList.splice(selectedSexesList.indexOf(value), 1);
+            if (selectedSexesList.length == 1)
+                this.checked = true;
+            else
+                selectedSexesList.splice(selectedSexesList.indexOf(value), 1);
         }
         combineCodes();
         console.log("Sexes selected: ", selectedSexesList);
@@ -184,7 +219,10 @@ d3.csv(dataPath, function(data) {
         if (this.checked) {
             selectedAgesList.push(value);
         } else {
-            selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
+            if (selectedAgesList.length == 1)
+                this.checked = true;
+            else
+                selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
         }
         combineCodes();
         console.log("Ages selected: ", selectedAgesList);
