@@ -44,9 +44,9 @@ function populateCancerTypesDropdown(keyValuePairs) {
     let cancerTypeDropDown = $("#cancerTypeFilter");
     for (let key in keyValuePairs) {
         if (keyValuePairs.hasOwnProperty(key)) {
-            cancerTypeDropDown.append(`
-                <option value=${key}>${keyValuePairs[key]["EN"]}</option>
-            `);
+                cancerTypeDropDown.append(`
+                    <option value=${key}>${keyValuePairs[key]["EN"]}</option>
+                `);
         }
     }
 }
@@ -74,7 +74,41 @@ d3.csv(dataPath, function(data) {
         populateCancerTypesDropdown(cancerTypeFilterMapping);
     });
     
-    let selectedCancerType = $("#cancerTypeFilter").value;
+    let selectedPeriodOfDiagnosisList = ["A"];
+    let selectedSexesList = ["B"];
+    let selectedAgesList = ["A"];
+    let selectedCancerType = 1;
+
+    let filterCodes = [];
+    const combineCodes = function() {
+        let firstLayer = [];
+        for (let i=0; i<selectedPeriodOfDiagnosisList.length; i++) {
+            firstLayer.push(selectedPeriodOfDiagnosisList[i]);
+        }
+        
+        let secondLayer = [];
+        for (let i=0; i<selectedSexesList.length; i++) {
+            for (let k=0; k<firstLayer.length; k++) {
+                secondLayer.push(firstLayer[k] + selectedSexesList[i]);
+            }
+        }
+
+        let thirdLayer = [];
+        for (let i=0; i<selectedAgesList.length; i++) {
+            for (let k=0; k<secondLayer.length; k++) {
+                thirdLayer.push(secondLayer[k] + selectedAgesList[i]);
+            }
+        }
+
+        // adding the cancer codes at the end
+        for (let i=0; i<thirdLayer.length; i++) {
+            console.log(selectedCancerType)
+            thirdLayer[i] += selectedCancerType.toString();
+        }
+        console.log("All codes: ", thirdLayer);
+        return thirdLayer;
+    };
+
     $("#cancerTypeFilter").on("change", function(e) {
         selectedCancerType = this.value;
         console.log("Selected cancer type: ", selectedCancerType);
@@ -103,7 +137,7 @@ d3.csv(dataPath, function(data) {
     };
     createCheckBoxGroupForPeriodOfDiagnosisFilter(periodOfDiagnosisFilterMapping);
     
-    let selectedPeriodOfDiagnosisList = [];
+    
     $(".period-of-diagnosis-filter").on("change", function(e) {
         let value = this.value;
         if (this.checked) {
@@ -111,6 +145,7 @@ d3.csv(dataPath, function(data) {
         } else {
             selectedPeriodOfDiagnosisList.splice(selectedPeriodOfDiagnosisList.indexOf(value), 1);
         }
+        combineCodes();
         console.log("Period of Diagnosis selected: ", selectedPeriodOfDiagnosisList);
     });
 
@@ -122,7 +157,7 @@ d3.csv(dataPath, function(data) {
     };
     createCheckBoxGroupForSexFilter(sexFilterMapping);
     
-    let selectedSexesList = [];
+    
     $(".sex-filter").on("change", function(e) {
         let value = this.value;
         if (this.checked) {
@@ -130,6 +165,7 @@ d3.csv(dataPath, function(data) {
         } else {
             selectedSexesList.splice(selectedSexesList.indexOf(value), 1);
         }
+        combineCodes();
         console.log("Sexes selected: ", selectedSexesList);
     });
 
@@ -143,7 +179,6 @@ d3.csv(dataPath, function(data) {
     };
     createCheckBoxGroupForAgeFilter(ageFilterMapping);
 
-    let selectedAgesList = [];
     $(".age-filter").on("change", function(e) {
         let value = this.value;
         if (this.checked) {
@@ -151,6 +186,7 @@ d3.csv(dataPath, function(data) {
         } else {
             selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
         }
+        combineCodes();
         console.log("Ages selected: ", selectedAgesList);
     });
 
@@ -174,7 +210,6 @@ d3.csv(dataPath, function(data) {
     let graph = new Graph(data, document.getElementById("graph"));
     
     graph.addLine(exampleFilter);
-
 });
 
 class Graph {
