@@ -202,6 +202,7 @@ d3.csv(dataPath, function(data) {
     
     $("#cancerTypeFilter").on("change", function(e) {
         selectedCancerType = this.value;
+        updateLines(combineCodes());
     });
     
     // measure filter code

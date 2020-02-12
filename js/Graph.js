@@ -83,6 +83,9 @@ class Graph {
         this.lines.push(filter);
         let this_ = this;
         let lineGenerator = d3.line()
+            .defined(function(d) {
+                return d[filter] != "" && !isNaN(d[filter]);
+            })
             .x(function(d, i) {
                 return this_.x(d["survtime"]); 
             })
@@ -91,24 +94,20 @@ class Graph {
             })
             .curve(d3.curveStep);
         
-        
-        
         let filteredDataForSurvival = this.data.filter(
             function(d){
                 return d["_NAME_"] == "SURVIVAL";
             }
         );
 
-        let line = lineGenerator(filteredDataForSurvival);
-        
-
+        let filteredData = filteredDataForSurvival.filter(lineGenerator.defined());
         let lineGroup = this.svg
             .append("g")
             .attr("class", "line")
             .attr("id", filter);
         
         lineGroup.append("path")
-            .attr("d", line)
+            .attr("d", lineGenerator(filteredData))
             .style("fill", "none")
             .style("stroke-width", "2px")
             .style("stroke", "#2980b9")
