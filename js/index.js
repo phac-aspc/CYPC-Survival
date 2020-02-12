@@ -175,7 +175,7 @@ d3.csv(dataPath, function(data) {
         console.log("Filter codes: ", thirdLayer);
         return fourthLayer;
     };
-    
+
     let graph = new Graph(data, document.getElementById("graph"));
 
     const updateLines = function(codes) {
@@ -317,4 +317,9 @@ d3.csv(dataPath, function(data) {
         "": "High risk"
     };
     let selectedRiskGroupsList = [];
+
+    $("#CIToggle").on("click", function() {
+        graph.toggleConfidenceIntervals();
+        $("#ciON").text(graph.confidenceIntervalsON ? "ON" : "OFF");
+    });
 });

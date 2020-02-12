@@ -37,16 +37,9 @@ class Graph {
         this.changeScales("ABAB1");
     }
 
-    turnOffConfidenceIntervals() {
-        this.confidenceIntervalsON = false;
-        d3.select(".interval")
-            .style("display", "hidden");
-    }
-
-    turnOnConfidenceIntervals() {
-        this.confidenceIntervalsON = false;
-        d3.select(".interval")
-            .style("display", "block");
+    toggleConfidenceIntervals() {
+        this.confidenceIntervalsON = !this.confidenceIntervalsON;
+        d3.selectAll(".interval").style("opacity", this.confidenceIntervalsON ? 0.5 : 0);
     }
 
     changeScales(filter) {
@@ -116,6 +109,7 @@ class Graph {
         console.log("area values: ", filteredData);
 
         lineGroup.append("path")
+                .attr("class", "interval")
                  .attr("d", areaGenerator(filteredData))
                  .style("fill", "2980b9")
                  .style("opacity", 0.5)
