@@ -1,6 +1,9 @@
 class Graph {
     constructor(data, target, height=500, width=700) {
-        this.data = data;
+        this.data = data.filter(function(d) {
+            return d["_NAME_"] == "SURVIVAL";
+        });
+
         this.confidenceIntervalsON = true;
         this.margin = { top: 25, right: 35, bottom: 60, left: 35 };
         this.height = height - this.margin.top - this.margin.bottom;
@@ -21,7 +24,7 @@ class Graph {
         
         this.x = null;
         this.y = null;
-        
+
         // default filter sequence
         this.changeScales("ABAB1");
     }
@@ -40,13 +43,10 @@ class Graph {
 
     changeScales(filter) {
         let maxY = d3.max(this.data, function(d) {
-            if (d["_NAME_"] === "ATRISK")
-                return 0;
             return d[filter];
         });
+
         let maxX = d3.max(this.data, function(d) {
-            if (d["_NAME_"] === "ATRISK")
-                return 0;
             return +d["survtime"] || 0;
         });
 
@@ -74,9 +74,6 @@ class Graph {
                 .transition()
                 .duration(500)
                 .call(xAxis);
-
-        console.log("Max: ", maxX);
-        console.log("x of 60:", this.x(60));
     }
 
     addLine(filter) {
@@ -93,14 +90,8 @@ class Graph {
                 return this_.y(d[filter]); 
             })
             .curve(d3.curveStep);
-        
-        let filteredDataForSurvival = this.data.filter(
-            function(d){
-                return d["_NAME_"] == "SURVIVAL";
-            }
-        );
 
-        let filteredData = filteredDataForSurvival.filter(lineGenerator.defined());
+        let filteredData = this.data.filter(lineGenerator.defined());
         let lineGroup = this.svg
             .append("g")
             .attr("class", "line")
@@ -110,7 +101,7 @@ class Graph {
             .attr("d", lineGenerator(filteredData))
             .style("fill", "none")
             .style("stroke-width", "2px")
-            .style("stroke", "#2980b9")
+            .style("stroke", "#2980b9");
     }
 
     removeLine(filter) {
