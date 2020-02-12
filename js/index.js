@@ -111,11 +111,13 @@ d3.csv(dataPath, function(data) {
     let selectedCancerType = 1;
 
     const combineCodes = function() {
+        // adding the codes for selected period of diagnosis
         let firstLayer = [];
         for (let i=0; i<selectedPeriodOfDiagnosisList.length; i++) {
             firstLayer.push(selectedPeriodOfDiagnosisList[i]);
         }
         
+        // adding the codes for selected sexes
         let secondLayer = [];
         for (let i=0; i<selectedSexesList.length; i++) {
             for (let k=0; k<firstLayer.length; k++) {
@@ -123,6 +125,7 @@ d3.csv(dataPath, function(data) {
             }
         }
 
+        // adding the codes for selected ages
         let thirdLayer = [];
         for (let i=0; i<selectedAgesList.length; i++) {
             for (let k=0; k<secondLayer.length; k++) {
@@ -140,6 +143,7 @@ d3.csv(dataPath, function(data) {
     };
     
     let graph = new Graph(data, document.getElementById("graph"));
+
     const updateLines = function(codes) {
         let lines = graph.lines.slice(0, graph.lines.length);
 
@@ -149,7 +153,6 @@ d3.csv(dataPath, function(data) {
                 graph.addLine(codes[i]);
             }
         }
-        console.log("Lines in display (after addition):", graph.lines);
 
         // remove extras
         for (let i=0; i<lines.length;i++) {
@@ -157,10 +160,12 @@ d3.csv(dataPath, function(data) {
                 graph.removeLine(lines[i]);
             }
         }
-        console.log("Lines in display (after removal):", graph.lines);
-        console.log("Lines:", lines);
+        
+        console.log("Lines on the display:", graph.lines);
     };
+    
     updateLines(combineCodes());
+    
     $("#cancerTypeFilter").on("change", function(e) {
         selectedCancerType = this.value;
     });
@@ -245,8 +250,8 @@ d3.csv(dataPath, function(data) {
             else
                 selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
         }
+
         updateLines(combineCodes());
-        console.log("Ages selected: ", selectedAgesList);
     });
 
     // unknown codes for the moment...
