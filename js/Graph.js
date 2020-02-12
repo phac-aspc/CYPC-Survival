@@ -39,7 +39,8 @@ class Graph {
 
     toggleConfidenceIntervals() {
         this.confidenceIntervalsON = !this.confidenceIntervalsON;
-        d3.selectAll(".interval").style("opacity", this.confidenceIntervalsON ? 0.5 : 0);
+        d3.selectAll(".interval")
+            .style("opacity", this.confidenceIntervalsON ? 0.5 : 0);
     }
 
     changeScales(filter) {
@@ -112,7 +113,7 @@ class Graph {
                 .attr("class", "interval")
                  .attr("d", areaGenerator(filteredData))
                  .style("fill", "2980b9")
-                 .style("opacity", 0.5)
+                 .style("opacity", this.confidenceIntervalsON ? 0.5 : 0)
                  .style("stroke-width", "2px");
     }
 
