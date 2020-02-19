@@ -3,7 +3,20 @@ class Graph {
         this.data = data.filter(function(d) {
             return d["_NAME_"] == "SURVIVAL";
         });
-        
+
+        this.lineColors = [
+            d3.rgb(57, 106, 177),
+            d3.rgb(218, 124, 48),
+            d3.rgb(62, 150, 81),
+            d3.rgb(204, 37, 41),
+            d3.rgb(83, 81, 84),
+            d3.rgb(107, 76, 154),
+            d3.rgb(146, 36, 40),
+            d3.rgb(148, 139, 61)
+        ]
+
+        this.colorIndex = -1;
+
         this.upperLimitData = data.filter(function(d) {
             return d["_NAME_"] == "EP_UCL";
         });
@@ -112,13 +125,14 @@ class Graph {
         lineGroup.append("path")
                 .attr("class", "interval")
                  .attr("d", areaGenerator(filteredData))
-                 .style("fill", "2980b9")
+                 .style("fill", this.lineColors[this.colorIndex])
                  .style("opacity", this.confidenceIntervalsON ? 0.5 : 0)
                  .style("stroke-width", "2px");
     }
 
     addLine(filter) {
         this.lines.push(filter);
+        this.colorIndex++;
         let this_ = this;
         
         let lineGenerator = d3.line()
@@ -145,12 +159,13 @@ class Graph {
             .attr("d", lineGenerator(filteredData))
             .style("fill", "none")
             .style("stroke-width", "2px")
-            .style("stroke", "#2980b9");              
+            .style("stroke", this.lineColors[this.colorIndex]);              
     }
 
     removeLine(filter) {
         this.lines.splice(this.lines.indexOf(filter), 1);
         this.svg.select("#" + filter)
                 .remove();
+        this.colorIndex--;
     }
 }
