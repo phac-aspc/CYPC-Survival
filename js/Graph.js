@@ -4,7 +4,7 @@ class Graph {
             return d["_NAME_"] == "SURVIVAL";
         });
 
-        this.lineColors = [
+        this.colorBank = [
             d3.rgb(57, 106, 177),
             d3.rgb(218, 124, 48),
             d3.rgb(62, 150, 81),
@@ -13,9 +13,9 @@ class Graph {
             d3.rgb(107, 76, 154),
             d3.rgb(146, 36, 40),
             d3.rgb(148, 139, 61)
-        ]
+        ];
 
-        this.colorIndex = -1;
+        this.colorMapping = {};
 
         this.upperLimitData = data.filter(function(d) {
             return d["_NAME_"] == "EP_UCL";
@@ -119,22 +119,23 @@ class Graph {
         let filteredData = areaValues.filter(function(d) {
             return !isNaN(d["x"]) && d["lower"] != "" && d["upper"] != "";
         });
-        
+
         console.log("area values: ", filteredData);
 
         lineGroup.append("path")
-                .attr("class", "interval")
+                 .attr("class", "interval")
                  .attr("d", areaGenerator(filteredData))
-                 .style("fill", this.lineColors[this.colorIndex])
-                 .style("opacity", this.confidenceIntervalsON ? 0.5 : 0)
+                 .style("fill", this.colorMapping[filter])
+                 .style("opacity", this.confidenceIntervalsON ? 0.2 : 0)
                  .style("stroke-width", "2px");
     }
 
     addLine(filter) {
         this.lines.push(filter);
-        this.colorIndex++;
-        let this_ = this;
+        this.colorMapping[filter] = this.colorBank.pop();
         
+        let this_ = this;
+
         let lineGenerator = d3.line()
             .defined(function(d) {
                 return d[filter] != "" && !isNaN(d[filter]);
@@ -153,19 +154,21 @@ class Graph {
             .attr("class", "line")
             .attr("id", filter);
         
-        this.addConfidenceInterval(filter); 
+        this.addConfidenceInterval(filter);
         
         lineGroup.append("path")
             .attr("d", lineGenerator(filteredData))
             .style("fill", "none")
             .style("stroke-width", "2px")
-            .style("stroke", this.lineColors[this.colorIndex]);              
+            .style("stroke", this.colorMapping[filter]);
     }
 
     removeLine(filter) {
         this.lines.splice(this.lines.indexOf(filter), 1);
         this.svg.select("#" + filter)
                 .remove();
-        this.colorIndex--;
+        
+        this.colorBank.push(this.colorMapping[filter]);
+        delete this.colorMapping[filter];
     }
 }
