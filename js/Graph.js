@@ -120,14 +120,28 @@ class Graph {
             return !isNaN(d["x"]) && d["lower"] != "" && d["upper"] != "";
         });
 
-        console.log("area values: ", filteredData);
-
         lineGroup.append("path")
                  .attr("class", "interval")
                  .attr("d", areaGenerator(filteredData))
                  .style("fill", this.colorMapping[filter])
                  .style("opacity", this.confidenceIntervalsON ? 0.2 : 0)
                  .style("stroke-width", "2px");
+    }
+
+    updateLines(codes) {
+        // add extras
+        for (let i=0; i<codes.length; i++) {
+            if (!this.lines.includes(codes[i])) {
+                this.addLine(codes[i]);
+            }
+        }
+
+        // remove extras
+        for (let i=0; i<this.lines.length;i++) {
+            if (!codes.includes(this.lines[i])) {
+                this.removeLine(this.lines[i]);
+            }
+        }
     }
 
     addLine(filter) {

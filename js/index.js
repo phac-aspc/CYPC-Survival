@@ -168,41 +168,18 @@ d3.csv(dataPath, function(data) {
 
         // adding the cancer codes at the end
         for (let i=0; i<fourthLayer.length; i++) {
-            console.log(selectedCancerType)
             fourthLayer[i] += selectedCancerType.toString();
         }
 
-        console.log("Filter codes: ", thirdLayer);
         return fourthLayer;
     };
 
-    let graph = new Graph(data, document.getElementById("graph"));
-
-    const updateLines = function(codes) {
-        let lines = graph.lines.slice(0, graph.lines.length);
-
-        // add extras
-        for (let i=0; i<codes.length; i++) {
-            if (!lines.includes(codes[i])) {
-                graph.addLine(codes[i]);
-            }
-        }
-
-        // remove extras
-        for (let i=0; i<lines.length;i++) {
-            if (!codes.includes(lines[i])) {
-                graph.removeLine(lines[i]);
-            }
-        }
-        
-        console.log("Lines on the display:", graph.lines);
-    };
-    
-    updateLines(combineCodes());
+    let graph = new Graph(data, document.getElementById("graph"));  
+    graph.updateLines(combineCodes());
     
     $("#cancerTypeFilter").on("change", function(e) {
         selectedCancerType = this.value;
-        updateLines(combineCodes());
+        graph.updateLines(combineCodes());
     });
     
     // measure filter code
@@ -216,7 +193,6 @@ d3.csv(dataPath, function(data) {
     let selectedMeasure = $("#measureFilter").value;
     $('#measureFilter').on("change", function(e) {
         selectedMeasure = this.value;
-        console.log("Selected measure: ", selectedMeasure);
     });
 
     // period of diagnosis filter code
@@ -228,7 +204,6 @@ d3.csv(dataPath, function(data) {
     };
     createCheckBoxGroupForPeriodOfDiagnosisFilter(periodOfDiagnosisFilterMapping);
 
-
     $(".period-of-diagnosis-filter").on("change", function(e) {
         let value = this.value;
         if (this.checked) {
@@ -239,8 +214,8 @@ d3.csv(dataPath, function(data) {
             else
                 selectedPeriodOfDiagnosisList.splice(selectedPeriodOfDiagnosisList.indexOf(value), 1);
         }
-        updateLines(combineCodes());
-        console.log("Period of Diagnosis selected: ", selectedPeriodOfDiagnosisList);
+
+        graph.updateLines(combineCodes());
     });
 
     // sex filter code
@@ -261,8 +236,7 @@ d3.csv(dataPath, function(data) {
             else
                 selectedSexesList.splice(selectedSexesList.indexOf(value), 1);
         }
-        updateLines(combineCodes());
-        console.log("Sexes selected: ", selectedSexesList);
+        graph.updateLines(combineCodes());
     });
 
     // age filter code
@@ -286,7 +260,7 @@ d3.csv(dataPath, function(data) {
                 selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
         }
 
-        updateLines(combineCodes());
+        graph.updateLines(combineCodes());
     });
 
     let extentOfDiseaseFilterMapping = {
@@ -307,7 +281,7 @@ d3.csv(dataPath, function(data) {
                 selectedExtentOfDiseasesList.splice(selectedExtentOfDiseasesList.indexOf(value), 1);
         }
 
-        updateLines(combineCodes());
+        graph.updateLines(combineCodes());
     });
 
     // unkown codes for the moment...
