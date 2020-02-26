@@ -101,7 +101,7 @@ function populateCancerTypesDropdown(keyValuePairs) {
     }
 }
 
-function populateMeasureDropdown(keyValuePairs) {
+function populateMeasureTypesDropdown(keyValuePairs) {
     let measureDropdown = $("#measureFilter");
     for (let key in keyValuePairs) {
         if (keyValuePairs.hasOwnProperty(key)) {
@@ -113,7 +113,7 @@ function populateMeasureDropdown(keyValuePairs) {
 }
 
 d3.csv(dataPath, function(data) {
-    // cancer type filter code
+    // cancer type filter codes
     let cancerTypeFilterMapping = {};
     d3.csv(cancerCodesPath, function(codes) {
         codes.forEach(function(value, i) {
@@ -123,18 +123,67 @@ d3.csv(dataPath, function(data) {
         });
         populateCancerTypesDropdown(cancerTypeFilterMapping);
     });
-    
+
+    let measureFilterMapping = {
+        "OS": "Overall survival",
+        "EF": "Event-free survival",
+        "CIR": "Cumulative incidence of relapse"
+    };
+
+    let periodOfDiagnosisFilterMapping = {
+        "A": "All years",
+        "E": "2001-2006",
+        "M": "2007-2011",
+        "L": "2012-2016"
+    };
+
+    let sexFilterMapping = {
+        "B": "Both",
+        "M": "Male",
+        "F": "Female"
+    };
+
+    let ageFilterMapping = {
+        "A": "All Ages",
+        "B": "less than 1 year",
+        "C": "1 to 4 years",
+        "D": "5 to 9 years",
+        "E": "10 to 14 years"
+    };
+
+    let riskGroupFilterMapping = {
+        "B": "Both",
+        "": "Standard risk",
+        "": "High risk"
+    };
+
+    let extentOfDiseaseFilterMapping = {
+        "B": "Both",
+        "M": "Metastatic disease",
+        "N": "Non-metastatic disease",
+    };
+
+    const defaultCancerType = 1;
+    const defaultMeasureType = "OS";
     const defaultPeriodOfDiagnosis = "A";
     const defaultSex = "B";
     const defaultAge = "A";
     const defaultExtentOfDisease = "B";
 
+    let selectedCancerType = defaultCancerType;
+    let selectedMeasure = defaultMeasureType;
     let selectedPeriodOfDiagnosisList = [defaultPeriodOfDiagnosis];
     let selectedSexesList = [defaultSex];
     let selectedAgesList = [defaultAge];
     let selectedExtentOfDiseasesList = [defaultExtentOfDisease];
-    let selectedCancerType = 1;
+    let selectedRiskGroupsList = [];
 
+    populateMeasureTypesDropdown(measureFilterMapping);
+    createCheckBoxGroupForPeriodOfDiagnosisFilter(periodOfDiagnosisFilterMapping);
+    createCheckBoxGroupForSexFilter(sexFilterMapping);
+    createCheckBoxGroupForAgeFilter(ageFilterMapping);
+    createCheckBoxGroupForExtentOfDisease(extentOfDiseaseFilterMapping);
+    
     const combineCodes = function() {
         // adding the codes for selected period of diagnosis
         let firstLayer = [];
@@ -174,23 +223,14 @@ d3.csv(dataPath, function(data) {
         return fourthLayer;
     };
 
-    // measure filter code
-    let measureFilterMapping = {
-        "OS": "Overall survival",
-        "EF": "Event-free survival",
-        "CIR": "Cumulative incidence of relapse"
-    };
-    populateMeasureDropdown(measureFilterMapping);
-    let selectedMeasure = "OS";
-    
     let filteredDataByMeasureType = data.filter(function(d) {
         return d["MEASURE"] == selectedMeasure;
     });
-    console.log(filteredDataByMeasureType);
     
     let graph = new Graph(filteredDataByMeasureType, document.getElementById("graph"));  
     graph.updateLines(combineCodes());
-
+    
+    // event listeners
     $('#measureFilter').on("change", function(e) {
         selectedMeasure = this.value;
     });
@@ -199,15 +239,6 @@ d3.csv(dataPath, function(data) {
         selectedCancerType = this.value;
         graph.updateLines(combineCodes());
     });
-
-    // period of diagnosis filter code
-    let periodOfDiagnosisFilterMapping = {
-        "A": "All years",
-        "E": "2001-2006",
-        "M": "2007-2011",
-        "L": "2012-2016"
-    };
-    createCheckBoxGroupForPeriodOfDiagnosisFilter(periodOfDiagnosisFilterMapping);
 
     $(".period-of-diagnosis-filter").on("change", function(e) {
         let value = this.value;
@@ -223,14 +254,6 @@ d3.csv(dataPath, function(data) {
         graph.updateLines(combineCodes());
     });
 
-    // sex filter code
-    let sexFilterMapping = {
-        "B": "Both",
-        "M": "Male",
-        "F": "Female"
-    };
-    createCheckBoxGroupForSexFilter(sexFilterMapping);
-    
     $(".sex-filter").on("change", function(e) {
         let value = this.value;
         if (this.checked) {
@@ -243,37 +266,6 @@ d3.csv(dataPath, function(data) {
         }
         graph.updateLines(combineCodes());
     });
-
-    // age filter code
-    let ageFilterMapping = {
-        "A": "All Ages",
-        "B": "less than 1 year",
-        "C": "1 to 4 years",
-        "D": "5 to 9 years",
-        "E": "10 to 14 years"
-    };
-    createCheckBoxGroupForAgeFilter(ageFilterMapping);
-
-    $(".age-filter").on("change", function(e) {
-        let value = this.value;
-        if (this.checked) {
-            selectedAgesList.push(value);
-        } else {
-            if (selectedAgesList.length == 1)
-                this.checked = true;
-            else
-                selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
-        }
-
-        graph.updateLines(combineCodes());
-    });
-
-    let extentOfDiseaseFilterMapping = {
-        "B": "Both",
-        "M": "Metastatic disease",
-        "N": "Non-metastatic disease",
-    };
-    createCheckBoxGroupForExtentOfDisease(extentOfDiseaseFilterMapping);
 
     $(".extent-of-disease-filter").on("change", function(e) {
         let value = this.value;
@@ -289,13 +281,19 @@ d3.csv(dataPath, function(data) {
         graph.updateLines(combineCodes());
     });
 
-    // unkown codes for the moment...
-    let riskGroupFilterMapping = {
-        "B": "Both",
-        "": "Standard risk",
-        "": "High risk"
-    };
-    let selectedRiskGroupsList = [];
+    $(".age-filter").on("change", function(e) {
+        let value = this.value;
+        if (this.checked) {
+            selectedAgesList.push(value);
+        } else {
+            if (selectedAgesList.length == 1)
+                this.checked = true;
+            else
+                selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
+        }
+
+        graph.updateLines(combineCodes());
+    });
 
     $("#CIToggle").on("click", function() {
         graph.toggleConfidenceIntervals();
