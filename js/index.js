@@ -1,4 +1,4 @@
-const dataPath = "data/data-feb10.csv";
+const dataPath = "data/data-feb21.csv";
 const cancerCodesPath = "data/ICCC_codes.csv";
 
 function createCheckBoxGroupForPeriodOfDiagnosisFilter(keyValuePairs) {
@@ -174,25 +174,30 @@ d3.csv(dataPath, function(data) {
         return fourthLayer;
     };
 
-    let graph = new Graph(data, document.getElementById("graph"));  
-    graph.updateLines(combineCodes());
+    // measure filter code
+    let measureFilterMapping = {
+        "OS": "Overall survival",
+        "EF": "Event-free survival",
+        "CIR": "Cumulative incidence of relapse"
+    };
+    populateMeasureDropdown(measureFilterMapping);
+    let selectedMeasure = "OS";
     
+    let filteredDataByMeasureType = data.filter(function(d) {
+        return d["MEASURE"] == selectedMeasure;
+    });
+    console.log(filteredDataByMeasureType);
+    
+    let graph = new Graph(filteredDataByMeasureType, document.getElementById("graph"));  
+    graph.updateLines(combineCodes());
+
+    $('#measureFilter').on("change", function(e) {
+        selectedMeasure = this.value;
+    });
+
     $("#cancerTypeFilter").on("change", function(e) {
         selectedCancerType = this.value;
         graph.updateLines(combineCodes());
-    });
-    
-    // measure filter code
-    let measureFilterMapping = {
-        "A": "Overall survival",
-        "B": "Event-free survival",
-        "C": "Cumulative incidence of relapse"
-    };
-    populateMeasureDropdown(measureFilterMapping);
-    
-    let selectedMeasure = $("#measureFilter").value;
-    $('#measureFilter').on("change", function(e) {
-        selectedMeasure = this.value;
     });
 
     // period of diagnosis filter code
