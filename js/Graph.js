@@ -53,7 +53,7 @@ class Graph {
     toggleConfidenceIntervals() {
         this.confidenceIntervalsON = !this.confidenceIntervalsON;
         d3.selectAll(".interval")
-            .style("opacity", this.confidenceIntervalsON ? 0.5 : 0);
+            .style("opacity", this.confidenceIntervalsON ? 0.2 : 0);
     }
 
     changeScales(filter) {

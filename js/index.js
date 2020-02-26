@@ -229,8 +229,7 @@ d3.csv(dataPath, function(data) {
     
     let graph = new Graph(filteredDataByMeasureType, document.getElementById("graph"));  
     graph.updateLines(combineCodes());
-    
-    // event listeners
+
     $('#measureFilter').on("change", function(e) {
         selectedMeasure = this.value;
     });
@@ -250,7 +249,6 @@ d3.csv(dataPath, function(data) {
             else
                 selectedPeriodOfDiagnosisList.splice(selectedPeriodOfDiagnosisList.indexOf(value), 1);
         }
-
         graph.updateLines(combineCodes());
     });
 
@@ -277,7 +275,6 @@ d3.csv(dataPath, function(data) {
             else
                 selectedExtentOfDiseasesList.splice(selectedExtentOfDiseasesList.indexOf(value), 1);
         }
-
         graph.updateLines(combineCodes());
     });
 
@@ -291,7 +288,6 @@ d3.csv(dataPath, function(data) {
             else
                 selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
         }
-
         graph.updateLines(combineCodes());
     });
 
