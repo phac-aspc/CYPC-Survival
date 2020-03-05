@@ -32,11 +32,11 @@ class Graph {
         this.lines = [];
         this.svg = d3.select(target)
                      .append("svg")
+                     .attr("id", "svg")
                      .attr("height", height + this.margin.top + this.margin.bottom)
                      .attr("width", width + this.margin.left + this.margin.right)
                      .append('g')
-                     .attr('transform', 'translate(' + this.margin.left + ', ' + this.margin.top + ')');
-        
+                     .attr('transform', 'translate(' + this.margin.left + ', ' + this.margin.top + ')');        
         this.svg.append('g')
                 .attr("class", "y-axis");
         this.svg.append('g')
@@ -173,6 +173,7 @@ class Graph {
         lineGroup.append("path")
             .attr("d", lineGenerator(filteredData))
             .style("fill", "none")
+            .attr("class", "line-path")
             .style("stroke-width", "2px")
             .style("stroke", this.colorMapping[filter]);
     }
@@ -184,5 +185,73 @@ class Graph {
         
         this.colorBank.push(this.colorMapping[filter]);
         delete this.colorMapping[filter];
+    }
+
+    changeMeasure(newData) {
+        let this_ = this;
+
+        this_.data = newData.filter(function(d) {
+            return d["_NAME_"] == "SURVIVAL";
+        });
+
+        this_.upperLimitData = newData.filter(function(d) {
+            return d["_NAME_"] == "EP_UCL";
+        });
+
+        this_.lowerLimitData = newData.filter(function(d) {
+            return d["_NAME_"] == "EP_LCL";
+        });
+
+        for (let lineName of this.lines) {
+            let lineGenerator = d3.line()
+                                .defined(function(d) {
+                                    return d[lineName] != "" && !isNaN(d[lineName]);
+                                })
+                                .x(function(d, i) {
+                                    return this_.x(d["survtime"]); 
+                                })
+                                .y(function(d, i) {
+                                    return this_.y(d[lineName]); 
+                                })
+                                .curve(d3.curveStep);
+            let filteredData = this.data.filter(lineGenerator.defined());
+            
+            let areaValues = [];
+            for (let i=0; i<this.upperLimitData.length; i++) {
+                areaValues.push({
+                    'x': +this.lowerLimitData[i]["survtime"],
+                    'lower': +this.lowerLimitData[i][lineName], 
+                    'upper': +this.upperLimitData[i][lineName]
+                });
+            }
+    
+            let areaGenerator = d3.area()
+                                  .x(function(d) {
+                                      return this_.x(d["x"]);
+                                  })
+                                  .y0(function(d) {
+                                      return this_.y(d["lower"]);
+                                  })
+                                  .y1(function(d) {
+                                      return this_.y(d["upper"]);
+                                  })
+                                  .curve(d3.curveStep);
+            
+                                  let filteredAreaValues = areaValues.filter(function(d) {
+                return !isNaN(d["x"]) && d["lower"] != "" && d["upper"] != "";
+            });
+
+            let line = d3.select("#" + lineName);
+
+            line.select(".line-path")
+              .transition()
+              .duration(500)
+              .attr("d", lineGenerator(filteredData));
+            
+            line.select(".interval")
+                .transition()
+                .duration(500)
+                .attr("d", areaGenerator(filteredAreaValues));
+        }
     }
 }

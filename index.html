@@ -20,7 +20,8 @@
             margin-right: 15px;
         }
 
-        .checkbox-group, .dropdown-group {
+        .checkbox-group,
+        .dropdown-group {
             margin: 15px 0;
         }
     </style>
@@ -35,12 +36,12 @@
     <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-TN3RPZ" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
     <script>(function (w, d, s, l, i) {
-        w[l] = w[l] || []; w[l].push({
-            'gtm.start':
-                new Date().getTime(), event: 'gtm.js'
-        }); var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-TN3RPZ');</script>
     <!-- End Google Tag Manager -->
     <!-- Google Tag Manager DO NOT REMOVE OR MODIFY - NE PAS SUPPRIMER OU MODIFIER -->
@@ -182,7 +183,8 @@
             <span>Select Extent Of Disease: </span>
         </div>
         <hr>
-        <button type="button" id="CIToggle" class="btn btn-default">Confidence Intervals <span id="ciON">ON</span></button>
+        <button type="button" id="CIToggle" class="btn btn-default">Confidence Intervals <span
+                id="ciON">ON</span></button>
         <div id="graph"></div>
         <div class="row pagedetails">
             <div class="row pagedetails">
@@ -255,7 +257,7 @@
         crossorigin="anonymous"></script>
     <!-- D3 -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    
+
     <!-- My scripts -->
     <script src="js/Graph.js"></script>
     <script src="js/index.js"></script>

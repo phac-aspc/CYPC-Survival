@@ -126,7 +126,7 @@ d3.csv(dataPath, function(data) {
 
     let measureFilterMapping = {
         "OS": "Overall survival",
-        "EF": "Event-free survival",
+        "EFS": "Event-free survival",
         "CIR": "Cumulative incidence of relapse"
     };
 
@@ -227,11 +227,17 @@ d3.csv(dataPath, function(data) {
         return d["MEASURE"] == selectedMeasure;
     });
     
-    let graph = new Graph(filteredDataByMeasureType, document.getElementById("graph"));  
+    let graph = new Graph(filteredDataByMeasureType, document.getElementById("graph"));
     graph.updateLines(combineCodes());
 
     $('#measureFilter').on("change", function(e) {
         selectedMeasure = this.value;
+        console.log(selectedMeasure);
+        filteredDataByMeasureType = data.filter(function(d) {
+            return d["MEASURE"] == selectedMeasure;
+        });
+
+        graph.changeMeasure(filteredDataByMeasureType);
     });
 
     $("#cancerTypeFilter").on("change", function(e) {
@@ -291,7 +297,7 @@ d3.csv(dataPath, function(data) {
         graph.updateLines(combineCodes());
     });
 
-    $("#CIToggle").on("click", function() {
+    $("#CIToggle").on("click", function(e) {
         graph.toggleConfidenceIntervals();
         $("#ciON").text(graph.confidenceIntervalsON ? "ON" : "OFF");
     });
