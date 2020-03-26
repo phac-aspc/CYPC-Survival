@@ -171,6 +171,8 @@ class Graph {
 
         let filteredData = this.data.filter(lineGenerator.defined());
         
+        this.addConfidenceInterval(filter);
+
         this.svg.select(".lines")
             .append("path")
             .attr("d", lineGenerator(filteredData))
@@ -178,14 +180,12 @@ class Graph {
             .attr("class", "line-path " + filter)
             .style("stroke-width", "2px")
             .style("stroke", this.colorMapping[filter]);
-
-        this.addConfidenceInterval(filter);
     }
 
     removeLine(filter) {
         this.lines.splice(this.lines.indexOf(filter), 1);
         this.svg.selectAll("." + filter).remove();
-        
+
         this.colorBank.push(this.colorMapping[filter]);
         delete this.colorMapping[filter];
     }

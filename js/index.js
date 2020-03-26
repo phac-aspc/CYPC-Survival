@@ -230,6 +230,36 @@ d3.csv(dataPath, function(data) {
     let graph = new Graph(filteredDataByMeasureType, document.getElementById("graph"));
     graph.updateLines(combineCodes());
 
+
+    let generateTable = function(data) {
+        let table = d3.select("#table")
+                    .append("table")
+                    .attr("class", "table");
+
+        let tableHead = table.append("thead").
+        append("tr");
+        tableHead.append("th")
+                .text("Period of Diagnosis");
+        tableHead.append("th")
+                .text("Age Group (in years)");
+        tableHead.append("th")
+                .text("Sex");
+        tableHead.append("th")
+                .text("Extent of Disease or Risk Category");
+
+        let filteredDataByMeasureType = data.filter(function(d) {
+            return d["measure"] === selectedMeasure;
+        });
+
+        let codes = combineCodes();
+        for (let i=0;i<codes.length;i++) {
+
+        }
+        console.log(filteredDataByMeasureType);
+    };
+
+    d3.csv("data/table.csv", generateTable);
+
     $('#measureFilter').on("change", function(e) {
         selectedMeasure = this.value;
         console.log(selectedMeasure);
