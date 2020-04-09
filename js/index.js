@@ -111,224 +111,231 @@ function populateMeasureTypesDropdown(keyValuePairs) {
         }
     }
 }
-
-d3.csv(dataPath, function(data) {
-    // cancer type filter codes
-    let cancerTypeFilterMapping = {};
-    d3.csv(cancerCodesPath, function(codes) {
-        codes.forEach(function(value, i) {
-            cancerTypeFilterMapping[value.ID] = {}
-            cancerTypeFilterMapping[value.ID]['EN'] = value.NAME_EN;
-            cancerTypeFilterMapping[value.ID]['FR'] = value.NAME_FR;
+d3.csv("data/table.csv", function(tableData) {
+    d3.csv(dataPath, function(data) {
+        // cancer type filter codes
+        let cancerTypeFilterMapping = {};
+        d3.csv(cancerCodesPath, function(codes) {
+            codes.forEach(function(value, i) {
+                cancerTypeFilterMapping[value.ID] = {}
+                cancerTypeFilterMapping[value.ID]['EN'] = value.NAME_EN;
+                cancerTypeFilterMapping[value.ID]['FR'] = value.NAME_FR;
+            });
+            populateCancerTypesDropdown(cancerTypeFilterMapping);
         });
-        populateCancerTypesDropdown(cancerTypeFilterMapping);
-    });
 
-    let measureFilterMapping = {
-        "OS": "Overall survival",
-        "EFS": "Event-free survival",
-        "CIR": "Cumulative incidence of relapse"
-    };
+        let measureFilterMapping = {
+            "OS": "Overall survival",
+            "EFS": "Event-free survival",
+            "CIR": "Cumulative incidence of relapse"
+        };
 
-    let periodOfDiagnosisFilterMapping = {
-        "A": "All years",
-        "E": "2001-2006",
-        "M": "2007-2011",
-        "L": "2012-2016"
-    };
+        let periodOfDiagnosisFilterMapping = {
+            "A": "All years",
+            "E": "2001-2006",
+            "M": "2007-2011",
+            "L": "2012-2016"
+        };
 
-    let sexFilterMapping = {
-        "B": "Both",
-        "M": "Male",
-        "F": "Female"
-    };
+        let sexFilterMapping = {
+            "B": "Both",
+            "M": "Male",
+            "F": "Female"
+        };
 
-    let ageFilterMapping = {
-        "A": "All Ages",
-        "B": "less than 1 year",
-        "C": "1 to 4 years",
-        "D": "5 to 9 years",
-        "E": "10 to 14 years"
-    };
+        let ageFilterMapping = {
+            "A": "All Ages",
+            "B": "less than 1 year",
+            "C": "1 to 4 years",
+            "D": "5 to 9 years",
+            "E": "10 to 14 years"
+        };
 
-    let riskGroupFilterMapping = {
-        "B": "Both",
-        "": "Standard risk",
-        "": "High risk"
-    };
+        let riskGroupFilterMapping = {
+            "B": "Both",
+            "": "Standard risk",
+            "": "High risk"
+        };
 
-    let extentOfDiseaseFilterMapping = {
-        "B": "Both",
-        "M": "Metastatic disease",
-        "N": "Non-metastatic disease",
-    };
+        let extentOfDiseaseFilterMapping = {
+            "B": "Both",
+            "M": "Metastatic disease",
+            "N": "Non-metastatic disease",
+        };
 
-    const defaultCancerType = 1;
-    const defaultMeasureType = "OS";
-    const defaultPeriodOfDiagnosis = "A";
-    const defaultSex = "B";
-    const defaultAge = "A";
-    const defaultExtentOfDisease = "B";
+        const defaultCancerType = 1;
+        const defaultMeasureType = "OS";
+        const defaultPeriodOfDiagnosis = "A";
+        const defaultSex = "B";
+        const defaultAge = "A";
+        const defaultExtentOfDisease = "B";
 
-    let selectedCancerType = defaultCancerType;
-    let selectedMeasure = defaultMeasureType;
-    let selectedPeriodOfDiagnosisList = [defaultPeriodOfDiagnosis];
-    let selectedSexesList = [defaultSex];
-    let selectedAgesList = [defaultAge];
-    let selectedExtentOfDiseasesList = [defaultExtentOfDisease];
-    let selectedRiskGroupsList = [];
+        let selectedCancerType = defaultCancerType;
+        let selectedMeasure = defaultMeasureType;
+        let selectedPeriodOfDiagnosisList = [defaultPeriodOfDiagnosis];
+        let selectedSexesList = [defaultSex];
+        let selectedAgesList = [defaultAge];
+        let selectedExtentOfDiseasesList = [defaultExtentOfDisease];
+        let selectedRiskGroupsList = [];
 
-    populateMeasureTypesDropdown(measureFilterMapping);
-    createCheckBoxGroupForPeriodOfDiagnosisFilter(periodOfDiagnosisFilterMapping);
-    createCheckBoxGroupForSexFilter(sexFilterMapping);
-    createCheckBoxGroupForAgeFilter(ageFilterMapping);
-    createCheckBoxGroupForExtentOfDisease(extentOfDiseaseFilterMapping);
-    
-    const combineCodes = function() {
-        // adding the codes for selected period of diagnosis
-        let firstLayer = [];
-        for (let i=0; i<selectedPeriodOfDiagnosisList.length; i++) {
-            firstLayer.push(selectedPeriodOfDiagnosisList[i]);
-        }
+        populateMeasureTypesDropdown(measureFilterMapping);
+        createCheckBoxGroupForPeriodOfDiagnosisFilter(periodOfDiagnosisFilterMapping);
+        createCheckBoxGroupForSexFilter(sexFilterMapping);
+        createCheckBoxGroupForAgeFilter(ageFilterMapping);
+        createCheckBoxGroupForExtentOfDisease(extentOfDiseaseFilterMapping);
         
-        // adding the codes for selected sexes
-        let secondLayer = [];
-        for (let i=0; i<selectedSexesList.length; i++) {
-            for (let k=0; k<firstLayer.length; k++) {
-                secondLayer.push(firstLayer[k] + selectedSexesList[i]);
+        const combineCodes = function() {
+            // adding the codes for selected period of diagnosis
+            let firstLayer = [];
+            for (let i=0; i<selectedPeriodOfDiagnosisList.length; i++) {
+                firstLayer.push(selectedPeriodOfDiagnosisList[i]);
             }
-        }
-
-        // adding the codes for selected ages
-        let thirdLayer = [];
-        for (let i=0; i<selectedAgesList.length; i++) {
-            for (let k=0; k<secondLayer.length; k++) {
-                thirdLayer.push(secondLayer[k] + selectedAgesList[i]);
+            
+            // adding the codes for selected sexes
+            let secondLayer = [];
+            for (let i=0; i<selectedSexesList.length; i++) {
+                for (let k=0; k<firstLayer.length; k++) {
+                    secondLayer.push(firstLayer[k] + selectedSexesList[i]);
+                }
             }
-        }
 
-        // adding the codes for extent of disease
-        let fourthLayer = [];
-        for (let i=0; i<selectedExtentOfDiseasesList.length; i++) {
-            for (let k=0; k<thirdLayer.length; k++) {
-                fourthLayer.push(thirdLayer[k] + selectedExtentOfDiseasesList[i]);
+            // adding the codes for selected ages
+            let thirdLayer = [];
+            for (let i=0; i<selectedAgesList.length; i++) {
+                for (let k=0; k<secondLayer.length; k++) {
+                    thirdLayer.push(secondLayer[k] + selectedAgesList[i]);
+                }
             }
-        }
 
-        // adding the cancer codes at the end
-        for (let i=0; i<fourthLayer.length; i++) {
-            fourthLayer[i] += selectedCancerType.toString();
-        }
+            // adding the codes for extent of disease
+            let fourthLayer = [];
+            for (let i=0; i<selectedExtentOfDiseasesList.length; i++) {
+                for (let k=0; k<thirdLayer.length; k++) {
+                    fourthLayer.push(thirdLayer[k] + selectedExtentOfDiseasesList[i]);
+                }
+            }
 
-        return fourthLayer;
-    };
+            // adding the cancer codes at the end
+            for (let i=0; i<fourthLayer.length; i++) {
+                fourthLayer[i] += selectedCancerType.toString();
+            }
 
-    let filteredDataByMeasureType = data.filter(function(d) {
-        return d["MEASURE"] == selectedMeasure;
-    });
-    
-    let graph = new Graph(filteredDataByMeasureType, document.getElementById("graph"));
-    graph.updateLines(combineCodes());
-
-
-    let generateTable = function(data) {
-        let table = d3.select("#table")
-                    .append("table")
-                    .attr("class", "table");
-
-        let tableHead = table.append("thead").
-        append("tr");
-        tableHead.append("th")
-                .text("Period of Diagnosis");
-        tableHead.append("th")
-                .text("Age Group (in years)");
-        tableHead.append("th")
-                .text("Sex");
-        tableHead.append("th")
-                .text("Extent of Disease or Risk Category");
+            return fourthLayer;
+        };
 
         let filteredDataByMeasureType = data.filter(function(d) {
-            return d["measure"] === selectedMeasure;
-        });
-
-        let codes = combineCodes();
-        for (let i=0;i<codes.length;i++) {
-
-        }
-        console.log(filteredDataByMeasureType);
-    };
-
-    d3.csv("data/table.csv", generateTable);
-
-    $('#measureFilter').on("change", function(e) {
-        selectedMeasure = this.value;
-        console.log(selectedMeasure);
-        filteredDataByMeasureType = data.filter(function(d) {
             return d["MEASURE"] == selectedMeasure;
         });
-
-        graph.changeMeasure(filteredDataByMeasureType);
-    });
-
-    $("#cancerTypeFilter").on("change", function(e) {
-        selectedCancerType = this.value;
+        
+        let graph = new Graph(filteredDataByMeasureType, document.getElementById("graph"));
         graph.updateLines(combineCodes());
-    });
+        
+        // creating the table
+        let table = d3.select("#table")
+            .append("table")
+            .attr("class", "table");
 
-    $(".period-of-diagnosis-filter").on("change", function(e) {
-        let value = this.value;
-        if (this.checked) {
-            selectedPeriodOfDiagnosisList.push(value);
-        } else {
-            if (selectedPeriodOfDiagnosisList.length == 1)
-                this.checked = true;
-            else
-                selectedPeriodOfDiagnosisList.splice(selectedPeriodOfDiagnosisList.indexOf(value), 1);
-        }
-        graph.updateLines(combineCodes());
-    });
+        let tableHead = table.append("thead")
+            .append("tr");
+        tableHead.append("th")
+            .text("Period of Diagnosis");
+        tableHead.append("th")
+            .text("Age Group (in years)");
+        tableHead.append("th")
+            .text("Sex");
+        tableHead.append("th")
+            .text("Extent of Disease or Risk Category");
+        
+        const updateTable = function() {
+            let codes = combineCodes();
+            table.select("tbody").remove();
 
-    $(".sex-filter").on("change", function(e) {
-        let value = this.value;
-        if (this.checked) {
-            selectedSexesList.push(value);
-        } else {
-            if (selectedSexesList.length == 1)
-                this.checked = true;
-            else
-                selectedSexesList.splice(selectedSexesList.indexOf(value), 1);
-        }
-        graph.updateLines(combineCodes());
-    });
+            let tableBody = table.append("tbody");
+            for (let i=0; i<codes.length; i++) {
+                let codesArray = codes[i].split("");
 
-    $(".extent-of-disease-filter").on("change", function(e) {
-        let value = this.value;
-        if (this.checked) {
-            selectedExtentOfDiseasesList.push(value);
-        } else {
-            if (selectedExtentOfDiseasesList.length == 1)
-                this.checked = true;
-            else
-                selectedExtentOfDiseasesList.splice(selectedExtentOfDiseasesList.indexOf(value), 1);
-        }
-        graph.updateLines(combineCodes());
-    });
+                let tableRow = tableBody.append("tr");
+                tableRow.append("td").text(periodOfDiagnosisFilterMapping[codesArray[0]]);
+                tableRow.append("td").text(ageFilterMapping[codesArray[2]]);
+                tableRow.append("td").text(sexFilterMapping[codesArray[1]]);
 
-    $(".age-filter").on("change", function(e) {
-        let value = this.value;
-        if (this.checked) {
-            selectedAgesList.push(value);
-        } else {
-            if (selectedAgesList.length == 1)
-                this.checked = true;
-            else
-                selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
-        }
-        graph.updateLines(combineCodes());
-    });
+                console.log(codes[i]);
+            }
+        };
+        
+        $('#measureFilter').on("change", function(e) {
+            selectedMeasure = this.value;
+            console.log(selectedMeasure);
+            filteredDataByMeasureType = data.filter(function(d) {
+                return d["MEASURE"] == selectedMeasure;
+            });
+            graph.changeMeasure(filteredDataByMeasureType);
+        });
 
-    $("#CIToggle").on("click", function(e) {
-        graph.toggleConfidenceIntervals();
-        $("#ciON").text(graph.confidenceIntervalsON ? "ON" : "OFF");
+        $("#cancerTypeFilter").on("change", function(e) {
+            selectedCancerType = this.value;
+            graph.updateLines(combineCodes());
+        });
+
+        $(".period-of-diagnosis-filter").on("change", function(e) {
+            let value = this.value;
+            if (this.checked) {
+                selectedPeriodOfDiagnosisList.push(value);
+            } else {
+                if (selectedPeriodOfDiagnosisList.length == 1)
+                    this.checked = true;
+                else
+                    selectedPeriodOfDiagnosisList.splice(selectedPeriodOfDiagnosisList.indexOf(value), 1);
+            }
+            updateTable();
+            graph.updateLines(combineCodes());
+        });
+
+        $(".sex-filter").on("change", function(e) {
+            let value = this.value;
+            if (this.checked) {
+                selectedSexesList.push(value);
+            } else {
+                if (selectedSexesList.length == 1)
+                    this.checked = true;
+                else
+                    selectedSexesList.splice(selectedSexesList.indexOf(value), 1);
+            }
+            updateTable();
+            graph.updateLines(combineCodes());
+        });
+
+        $(".extent-of-disease-filter").on("change", function(e) {
+            let value = this.value;
+            if (this.checked) {
+                selectedExtentOfDiseasesList.push(value);
+            } else {
+                if (selectedExtentOfDiseasesList.length == 1)
+                    this.checked = true;
+                else
+                    selectedExtentOfDiseasesList.splice(selectedExtentOfDiseasesList.indexOf(value), 1);
+            }
+            updateTable();
+            graph.updateLines(combineCodes());
+        });
+
+        $(".age-filter").on("change", function(e) {
+            let value = this.value;
+            if (this.checked) {
+                selectedAgesList.push(value);
+            } else {
+                if (selectedAgesList.length == 1)
+                    this.checked = true;
+                else
+                    selectedAgesList.splice(selectedAgesList.indexOf(value), 1);
+            }
+            updateTable();
+            graph.updateLines(combineCodes());
+        });
+
+        $("#CIToggle").on("click", function(e) {
+            graph.toggleConfidenceIntervals();
+            $("#ciON").text(graph.confidenceIntervalsON ? "ON" : "OFF");
+        });
     });
 });
