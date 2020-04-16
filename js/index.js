@@ -246,6 +246,16 @@ d3.csv("data/table.csv", function(tableData) {
         tableHead.append("th")
             .text("Extent of Disease or Risk Category");
         
+        tableHead.append("th")
+            .text("Time (in years)");
+        
+        tableHead.append("th")
+            .text("OSP");
+        tableHead.append("th")
+            .text("Lower CI");
+        tableHead.append("th")
+            .text("Upper CI");
+
         const updateTable = function() {
             let codes = combineCodes();
             table.select("tbody").remove();
@@ -255,14 +265,71 @@ d3.csv("data/table.csv", function(tableData) {
                 let codesArray = codes[i].split("");
 
                 let tableRow = tableBody.append("tr");
-                tableRow.append("td").text(periodOfDiagnosisFilterMapping[codesArray[0]]);
-                tableRow.append("td").text(ageFilterMapping[codesArray[2]]);
-                tableRow.append("td").text(sexFilterMapping[codesArray[1]]);
+                tableRow.append("td").attr("rowspan", "4").text(periodOfDiagnosisFilterMapping[codesArray[0]]);
+                tableRow.append("td").attr("rowspan", "4").text(ageFilterMapping[codesArray[2]]);
+                tableRow.append("td").attr("rowspan", "4").text(sexFilterMapping[codesArray[1]]);
+                tableRow.append("td").attr("rowspan", "4").text("Extent here");
 
+                let filteredTableData = tableData.filter(function(d) {
+                    return d.measure === "OS";
+                });
+
+                let valueRow1 = tableBody.append("tr");
+                let valueRow2 = tableBody.append("tr");
+                let valueRow3 = tableBody.append("tr");
+                
+                let year1FilteredData = filteredTableData.filter(function(d) {
+                    return d["year_followup"] == "1";
+                });
+                valueRow1.append("td").text("1");
+                
+                valueRow1.append("td").text(year1FilteredData.filter(function(d) {
+                    return d["indicatorCode"] == "OSP";
+                })[0][codes[i]]);
+                
+                valueRow1.append("td").text(year1FilteredData.filter(function(d) {
+                    return d["indicatorCode"] == "L_C";
+                })[0][codes[i]]);
+                
+                valueRow1.append("td").text(year1FilteredData.filter(function(d) {
+                    return d["indicatorCode"] == "U_C";
+                })[0][codes[i]]);
+
+                let year3FilteredData = filteredTableData.filter(function(d) {
+                    return d["year_followup"] == "3";
+                });
+                valueRow2.append("td").text("3");
+                valueRow2.append("td").text(year3FilteredData.filter(function(d) {
+                    return d["indicatorCode"] == "OSP";
+                })[0][codes[i]]);
+                valueRow2.append("td").text(year3FilteredData.filter(function(d) {
+                    return d["indicatorCode"] == "L_C";
+                })[0][codes[i]]);
+                valueRow2.append("td").text(year1FilteredData.filter(function(d) {
+                    return d["indicatorCode"] == "U_C";
+                })[0][codes[i]]);
+
+                let year5FilteredData = filteredTableData.filter(function(d) {
+                    return d["year_followup"] == "5";
+                });
+                
+                console.log(year5FilteredData);
+                valueRow3.append("td").text("5");
+                valueRow3.append("td").text(year5FilteredData.filter(function(d) {
+                    return d["indicatorCode"] == "OSP";
+                })[0][codes[i]]);
+                valueRow3.append("td").text(year5FilteredData.filter(function(d) {
+                    return d["indicatorCode"] == "L_C";
+                })[0][codes[i]]);
+                valueRow3.append("td").text(year5FilteredData.filter(function(d) {
+                    return d["indicatorCode"] == "U_C";
+                })[0][codes[i]]);
+
+                console.log(filteredTableData);
                 console.log(codes[i]);
             }
         };
-        
+        updateTable();
         $('#measureFilter').on("change", function(e) {
             selectedMeasure = this.value;
             console.log(selectedMeasure);

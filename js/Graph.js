@@ -245,12 +245,6 @@ class Graph {
                 return !isNaN(d["x"]) && d["lower"] != "" && d["upper"] != "";
             });
 
-            d3.select(".lines")
-              .select("." + lineName)
-              .transition()
-              .duration(500)
-              .attr("d", lineGenerator(filteredData));
-            
             d3.select(".intervals")
                 .select("." + lineName)
                 .transition()
