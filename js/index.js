@@ -124,6 +124,9 @@ d3.csv("data/table.csv", function(tableData) {
             populateCancerTypesDropdown(cancerTypeFilterMapping);
         });
 
+        const tableTitle = "One, three, and five-year $ and 95% confidence intervals.";
+        const graphTitle = "Kaplan-Meier survival estimate and 95% confidence $";
+
         let measureFilterMapping = {
             "OS": "Overall survival",
             "EFS": "Event-free survival",
@@ -259,7 +262,7 @@ d3.csv("data/table.csv", function(tableData) {
         const updateTable = function() {
             let codes = combineCodes();
             table.select("tbody").remove();
-
+            $("#table-title").text(tableTitle.replace("$", measureFilterMapping[selectedMeasure]));
             let tableBody = table.append("tbody");
             for (let i=0; i<codes.length; i++) {
                 let codesArray = codes[i].split("");
@@ -332,11 +335,13 @@ d3.csv("data/table.csv", function(tableData) {
         updateTable();
         $('#measureFilter').on("change", function(e) {
             selectedMeasure = this.value;
+            updateTable();
             console.log(selectedMeasure);
             filteredDataByMeasureType = data.filter(function(d) {
                 return d["MEASURE"] == selectedMeasure;
             });
             graph.changeMeasure(filteredDataByMeasureType);
+            
         });
 
         $("#cancerTypeFilter").on("change", function(e) {

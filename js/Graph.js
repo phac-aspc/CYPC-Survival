@@ -26,7 +26,7 @@ class Graph {
         });
 
         this.confidenceIntervalsON = true;
-        this.margin = { top: 25, right: 35, bottom: 60, left: 35 };
+        this.margin = { top: 60, right: 35, bottom: 60, left: 60 };
         this.height = height - this.margin.top - this.margin.bottom;
         this.width = width - this.margin.left - this.margin.right;
         this.lines = [];
@@ -96,6 +96,25 @@ class Graph {
                 .transition()
                 .duration(500)
                 .call(xAxis);
+        this.svg.append("text")             
+                .attr("transform",
+                      "translate(" + (this.width/2) + " ," + 
+                                     (this.height + this.margin.top + 20) + ")")
+                .style("text-anchor", "middle")
+                .text("Survival Time");
+        this.svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - this.margin.left)
+                .attr("x",0 - (this.height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Survival Probability");
+
+        this.svg.append("text")         
+                .attr("transform", "translate(" + (this.width/2) + " ," + -20 + ")")
+                .style("text-anchor", "middle")
+                .text("kaplan-Meier survival estimate and 95% confidence $");
+
     }
 
     addConfidenceInterval(filter) {
